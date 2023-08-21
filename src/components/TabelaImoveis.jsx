@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, useDisclosure } from "@nextui-org/react";
 import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
 import { EyeIcon } from "./EyeIcon";
 import axios from 'axios';
+import { MyContext } from "../contexts/MyContext";
 
 const statusColorMap = {
     locado: "success",
@@ -14,7 +15,8 @@ const statusColorMap = {
 import ModalCadImovel from './ModalCadImovel';
 
 export default function TabelaImoveis() {
-
+    const { rootState } = useContext(MyContext);
+    const { theUser } = rootState;
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [imoveis, setImoveis] = useState([]);
 
@@ -33,13 +35,13 @@ export default function TabelaImoveis() {
 
     const renderCell = React.useCallback((imovel, columnKey) => {
         const cellValue = imovel[columnKey];
-    
+
         switch (columnKey) {
             case "identificacao":
                 return (
                     <div className="flex flex-col">
-                        <p className="text-bold text-sm capitalize">{cellValue}</p>
                         <p className="text-bold text-sm capitalize text-default-400">{imovel.id}</p>
+                        <p className="text-bold text-sm capitalize">{cellValue}</p>                        
                     </div>
                 );
             case "valor_aluguel":
@@ -74,8 +76,8 @@ export default function TabelaImoveis() {
                 return cellValue;
         }
     }, []);
-    
-    
+
+
     const columns = [
         { name: "IDENTIFICAÇÃO", uid: "identificacao" },
         { name: "VALOR ALUGUEL", uid: "valor_aluguel" },
@@ -84,7 +86,7 @@ export default function TabelaImoveis() {
     ];
     const listImoveis = imoveis.map(imovel => ({
         id: imovel.id,
-        identificacao: imovel.endereco, // Renomeei para corresponder à coluna
+        identificacao: imovel.endereco +", "+ imovel.numero +" - "+ imovel.bairro +" - "+ imovel.cidade,
         valor_aluguel: imovel.valor_aluguel,
         status: imovel.status,
     }));
@@ -113,7 +115,7 @@ export default function TabelaImoveis() {
                     )}
                 </TableBody>
             </Table>
-            <ModalCadImovel isOpen={isOpen} onOpenChange={onOpenChange} />
+            <ModalCadImovel isOpen={isOpen} onOpenChange={onOpenChange} idUser={theUser.id} />
         </>
     );
 }

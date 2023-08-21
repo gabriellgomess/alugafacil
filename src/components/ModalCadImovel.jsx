@@ -1,82 +1,136 @@
 import React, { useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, RadioGroup, Radio } from "@nextui-org/react";
+import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
 
-export default function ModalCadImovel({ isOpen, onOpenChange }) {
 
-    const [imovelData, setImovelData] = useState({
-        locadorID: 1,
-        cep: '',
-        endereco: '',
-        numero: '',
-        complemento: '',
-        bairro: '',
-        cidade: '',
-        estado: '',
-        valor_aluguel: '',
-        descricao: '',
-        quartos: '',
-        banheiros: '',
-        garagem: '',
-        mobiliado: false,
-        data_disponibilidade: '',
-        status: '',
-        outras_caracteristicas: ''
-    });
+export default function ModalCadImovel({ isOpen, onOpenChange, idUser }) {
+
+
+
+    const { handleSubmit, control } = useForm();
+    const onSubmit = (data) => {
+        data.locadorId = idUser;
+        console.log(data);
+        axios.post('https://alugafacil.tech/api/gera_imovel.php', data)
+        .then(response => {
+            console.log(response)
+        })
+    };
 
 
     return (
         <>
             <Modal scrollBehavior="inside" size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
-                <form style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <form style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} onSubmit={handleSubmit(onSubmit)}>
                     <ModalContent>
                         {(onClose) => (
                             <>
-                                <ModalHeader className="flex flex-col gap-1">Cadastro de Imóvel</ModalHeader>
+                                <ModalHeader className="flex flex-col gap-1">Cadastro de Imóvel {idUser}</ModalHeader>
                                 <ModalBody>
                                     <div className="flex gap-2">
-                                        <Input label="Tipo" name="tipo" color="success"/>
-                                        <Input label="CEP" name="cep" color="success"/>
+                                        <Controller
+                                            name="endereco"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Endereço" color="success" />}
+                                        />
+                                        <Controller
+                                            name="numero"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Nº" color="success" />}
+                                        />
                                     </div>
                                     <div className="flex gap-2">
-                                        <Input label="Endereço" name="endereco" color="success"/>
-                                        <Input label="Nº" name="numero" color="success"/>
+                                        <Controller
+                                            name="complemento"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Complemento" color="success" />}
+                                        />
+                                        <Controller
+                                            name="bairro"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Bairro" color="success" />}
+                                        />
                                     </div>
                                     <div className="flex gap-2">
-                                        <Input label="Complemento" name="complemento" color="success"/>
-                                        <Input label="Bairro" name="bairro" color="success"/>
+                                        <Controller
+                                            name="cidade"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Cidade" color="success" />}
+                                        />
+                                        <Controller
+                                            name="estado"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Estado" color="success" />}
+                                        />
+                                    </div>
+                                    <Controller
+                                        name="descricao"
+                                        control={control}
+                                        defaultValue=""
+                                        render={({ field }) => <Textarea {...field} label="Descrição" color="success" />}
+                                    />
+                                    <div className="flex gap-2">
+                                        <Controller
+                                            name="quartos"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Quartos" color="success" />}
+                                        />
                                     </div>
                                     <div className="flex gap-2">
-                                        <Input label="Cidade" name="cidade" color="success"/>
-                                        <Input label="Estado" name="estado" color="success"/>
+                                        <Controller
+                                            name="banheiros"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Banheiros" color="success" />}
+                                        />
+                                        <Controller
+                                            name="garagem"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Garagem" color="success" />}
+                                        />
                                     </div>
-
-                                    <Textarea label="Descrição" name="descricao" color="success"/>
                                     <div className="flex gap-2">
-                                        <Input label="Quartos" name="quartos" color="success"/>
+                                        <Controller
+                                            name="valor_aluguel"
+                                            control={control}
+                                            defaultValue=""
+                                            render={({ field }) => <Input {...field} label="Valor" color="success" />}
+                                        />
                                     </div>
-                                    <div className="flex gap-2">
-                                        <Input label="Banheiros" name="banheiros" color="success"/>
-                                        <Input label="Garagem" name="garagem" color="success"/>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <Input label="Valor" name="valor_aluguel" color="success"/>
-                                    </div>
-                                    <Input label="Características Extras" name="outras_caracteristicas" color="success"/>
-                                    <RadioGroup
-                                        label="Mobiliado"
-                                        orientation="horizontal"
-                                    >
-                                        <Radio value="sim">Sim</Radio>
-                                        <Radio value="nao">Não</Radio>
-                                    </RadioGroup>
+                                    <Controller
+                                        name="outras_caracteristicas"
+                                        control={control}
+                                        defaultValue=""
+                                        render={({ field }) => <Input {...field} label="Características Extras" color="success" />}
+                                    />
+                                    <Controller
+                                        name="mobiliado"
+                                        control={control}
+                                        defaultValue=""
+                                        render={({ field }) => (
+                                            <RadioGroup label="Mobiliado" orientation="horizontal">
+                                                <Radio {...field} value="sim">Sim</Radio>
+                                                <Radio {...field} value="nao">Não</Radio>
+                                            </RadioGroup>
+                                        )}
+                                    />
 
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button color="danger" variant="light" onClick={onClose}>
-                                        Close
+                                        Fechar
                                     </Button>
                                     <Button type='submit' color="primary" onPress={onClose}>
-                                        Action
+                                        Cadastrar
                                     </Button>
                                 </ModalFooter>
                             </>
