@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, getKeyValue, Button, useDisclosure } from "@nextui-org/react";
 import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
+import { PlusIcon } from "./PlusIcon";
 import { EyeIcon } from "./EyeIcon";
 import axios from 'axios';
 import { MyContext } from "../contexts/MyContext";
@@ -111,7 +112,7 @@ export default function TabelaImoveis() {
         <>
             <div className="w-100 flex justify-end">
                 <Button onClick={onOpen} color="success">
-                    Adicionar Imóvel
+                <PlusIcon /> Adicionar Imóvel
                 </Button>
             </div>
 

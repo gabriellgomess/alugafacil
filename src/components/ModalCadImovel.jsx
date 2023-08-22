@@ -13,9 +13,9 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
         data.locadorId = idUser;
         console.log(data);
         axios.post('https://alugafacil.tech/api/gera_imovel.php', data)
-        .then(response => {
-            console.log(response)
-        })
+            .then(response => {
+                console.log(response)
+            })
     };
 
     // Function to handle changes to the edited property
@@ -25,10 +25,11 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
             ...prevImovel,
             [name]: value,
         }));
+        console.log(editedImovel);
     };
 
     useEffect(() => {
-        setEditedImovel(selectedImovel);        
+        setEditedImovel(selectedImovel);
     }, []);
 
 
@@ -47,12 +48,14 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                             control={control}
                                             defaultValue={editedImovel?.endereco || ""}
                                             render={({ field }) => <Input {...field} label="Endereço" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                         <Controller
                                             name="numero"
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Nº" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                     <div className="flex gap-2">
@@ -61,12 +64,14 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Complemento" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                         <Controller
                                             name="bairro"
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Bairro" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                     <div className="flex gap-2">
@@ -75,12 +80,14 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Cidade" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                         <Controller
                                             name="estado"
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Estado" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                     <Controller
@@ -88,6 +95,7 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                         control={control}
                                         defaultValue=""
                                         render={({ field }) => <Textarea {...field} label="Descrição" color="success" />}
+                                        onChange={handleInputChange}
                                     />
                                     <div className="flex gap-2">
                                         <Controller
@@ -95,6 +103,7 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Quartos" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                     <div className="flex gap-2">
@@ -103,12 +112,14 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Banheiros" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                         <Controller
                                             name="garagem"
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Garagem" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                     <div className="flex gap-2">
@@ -117,6 +128,7 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                             control={control}
                                             defaultValue=""
                                             render={({ field }) => <Input {...field} label="Valor" color="success" />}
+                                            onChange={handleInputChange}
                                         />
                                     </div>
                                     <Controller
@@ -124,6 +136,7 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                         control={control}
                                         defaultValue=""
                                         render={({ field }) => <Input {...field} label="Características Extras" color="success" />}
+                                        onChange={handleInputChange}
                                     />
                                     <Controller
                                         name="mobiliado"
@@ -135,6 +148,7 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedI
                                                 <Radio {...field} value="nao">Não</Radio>
                                             </RadioGroup>
                                         )}
+                                        onChange={handleInputChange}
                                     />
 
                                 </ModalBody>
