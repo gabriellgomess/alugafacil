@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, RadioGroup, Radio } from "@nextui-org/react";
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 
 
-export default function ModalCadImovel({ isOpen, onOpenChange, idUser }) {
+export default function ModalCadImovel({ isOpen, onOpenChange, idUser, selectedImovel }) {
 
-
+    const [editedImovel, setEditedImovel] = useState(selectedImovel);
 
     const { handleSubmit, control } = useForm();
     const onSubmit = (data) => {
@@ -17,6 +17,19 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser }) {
             console.log(response)
         })
     };
+
+    // Function to handle changes to the edited property
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setEditedImovel((prevImovel) => ({
+            ...prevImovel,
+            [name]: value,
+        }));
+    };
+
+    useEffect(() => {
+        setEditedImovel(selectedImovel);        
+    }, []);
 
 
     return (
@@ -32,7 +45,7 @@ export default function ModalCadImovel({ isOpen, onOpenChange, idUser }) {
                                         <Controller
                                             name="endereco"
                                             control={control}
-                                            defaultValue=""
+                                            defaultValue={editedImovel?.endereco || ""}
                                             render={({ field }) => <Input {...field} label="Endereço" color="success" />}
                                         />
                                         <Controller

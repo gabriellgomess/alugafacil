@@ -18,7 +18,10 @@ export default function TabelaImoveis() {
     const { rootState } = useContext(MyContext);
     const { theUser } = rootState;
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const [imoveis, setImoveis] = useState([]);
+    const [ imoveis, setImoveis ] = useState([]);
+
+    const [selectedImovel, setSelectedImovel] = useState(null);
+
 
     useEffect(() => {
         // Fetch data from your API endpoint using Axios
@@ -41,7 +44,7 @@ export default function TabelaImoveis() {
                 return (
                     <div className="flex flex-col">
                         <p className="text-bold text-sm capitalize text-default-400">{imovel.id}</p>
-                        <p className="text-bold text-sm capitalize">{cellValue}</p>                        
+                        <p className="text-bold text-sm capitalize">{imovel.endereco}</p>                        
                     </div>
                 );
             case "valor_aluguel":
@@ -55,13 +58,14 @@ export default function TabelaImoveis() {
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip color="warning" content="Detalhes">
-                            <span className="text-lg text-warning text-default-400 cursor-pointer active:opacity-50">
-                                <EyeIcon />
-                            </span>
-                        </Tooltip>
-                        <Tooltip color="success" content="Editar Imóvel">
-                            <span className="text-lg text-success text-default-400 cursor-pointer active:opacity-50">
+                       <Tooltip color="success" content="Editar Imóvel">
+                            <span
+                                className="text-lg text-success text-default-400 cursor-pointer active:opacity-50"
+                                onClick={() => {
+                                    setSelectedImovel(imovel); // Set the selected property for editing
+                                    onOpen(); // Open the modal
+                                }}
+                            >
                                 <EditIcon />
                             </span>
                         </Tooltip>
@@ -86,9 +90,21 @@ export default function TabelaImoveis() {
     ];
     const listImoveis = imoveis.map(imovel => ({
         id: imovel.id,
-        identificacao: imovel.endereco +", "+ imovel.numero +" - "+ imovel.bairro +" - "+ imovel.cidade,
+        endereco: imovel.endereco,
+        numero: imovel.numero,
+        complemento: imovel.complemento,
+        bairro: imovel.bairro,
+        cidade: imovel.cidade,
+        estado: imovel.estado,
+        locadorID: imovel.locadorID,
+        descricao: imovel.descricao,
+        banheiros: imovel.banheiros,
+        quartos: imovel.quartos,
+        garagem: imovel.garagem, 
         valor_aluguel: imovel.valor_aluguel,
         status: imovel.status,
+        outras_caracteristicas: imovel.outras_caracteristicas,
+        data_disponibilidade: imovel.data_disponibilidade,
     }));
 
     return (
@@ -115,7 +131,8 @@ export default function TabelaImoveis() {
                     )}
                 </TableBody>
             </Table>
-            <ModalCadImovel isOpen={isOpen} onOpenChange={onOpenChange} idUser={theUser.id} />
+            <ModalCadImovel isOpen={isOpen} onOpenChange={onOpenChange} idUser={theUser.id} selectedImovel={selectedImovel} />
+
         </>
     );
 }
